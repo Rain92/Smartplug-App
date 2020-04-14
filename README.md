@@ -1,6 +1,8 @@
 # Smartplug-App
 
-Xamarin.Android based controller app for https://github.com/Rain92/Smartplug-Esp32
+Xamarin.Android based controller Smartplug controller app.
+
+For the smartplug see https://github.com/Rain92/Smartplug-Esp32.
 
 # Features
 -Automatic device discovery in the local Wifi network, multiple devices supported
