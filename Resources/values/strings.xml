@@ -1,0 +1,8 @@
+<resources>
+  <string name="app_name">Smartplug Controller</string>
+  <string name="action_discover">Discover Devices</string>
+  <string name="action_smartconfig">Send Wifi Credentials</string>
+  <string name="toggleButtonOff">Off</string>
+  <string name="toggleButtonOn">On</string>
+  <string name="toggleButtonTime">Timer</string>
+</resources>
