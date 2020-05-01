@@ -16,6 +16,7 @@ using AlertDialog = Android.App.AlertDialog;
 using Debug = System.Diagnostics.Debug;
 using Android.Util;
 using System.Diagnostics;
+using Android.Content;
 
 namespace SmartPlugAndroid
 {
@@ -23,7 +24,7 @@ namespace SmartPlugAndroid
     public class MainActivity : AppCompatActivity
     {
         const string AKK = "Success!";
-        const string DEFAULTPASSWORD = "dontpublishthis";
+        const string DEFAULTPASSWORD = "password";
 
         Esp32Commuicator communicator = new Esp32Commuicator();
 
@@ -47,6 +48,7 @@ namespace SmartPlugAndroid
             FindViewById<ToggleButton>(Resource.Id.toggleButtonOn).Click += ToggleButtonPressed;
             FindViewById<ToggleButton>(Resource.Id.toggleButtonTime).Click += ToggleButtonPressed;
 
+            //FindViewById<Button>(Resource.Id.buttonSipleTimer).Click += SimpleTimerButtonPressed;
 
             FindViewById<ImageButton>(Resource.Id.imageButtonEditName).Click += (e, o) => RenameDevice();
             FindViewById<Spinner>(Resource.Id.spinnerDevice).ItemSelected += SpinnerDevice_SelectedItem;
@@ -91,30 +93,30 @@ namespace SmartPlugAndroid
             if (communicator.ActiveDevice.Item1 == null)
                 return;
 
-            ShowInputDialog("Rename Device", "Enter new device Name", communicator.ActiveDevice.Item1, (name) =>
-            {
-                if (name != "")
-                {
-                    try
-                    {
-                        settings.NetIdStr = name;
-                    }
-                    catch (ArgumentException)
-                    {
-                        ShowToast("Invalid name");
-                        return;
-                    }
-                    SendSettings();
-                    communicator.ClearDevices();
-                    communicator.SendDiscoveryCommand();
+            ShowInputDialog("Rename Device", "Enter new device Name", communicator.ActiveDevice.Item1, Android.Text.InputTypes.TextFlagNoSuggestions, (name) =>
+             {
+                 if (name != "")
+                 {
+                     try
+                     {
+                         settings.NetIdStr = name;
+                     }
+                     catch (ArgumentException)
+                     {
+                         ShowToast("Invalid name");
+                         return;
+                     }
+                     SendSettings();
+                     communicator.ClearDevices();
+                     communicator.SendDiscoveryCommand();
 
-                    ShowToast($"Renamed device to {name}");
-                }
-                else
-                {
-                    ShowToast("Invalid name");
-                }
-            });
+                     ShowToast($"Renamed device to {name}");
+                 }
+                 else
+                 {
+                     ShowToast("Invalid name");
+                 }
+             });
         }
 
         private void UpdateSpinnerEntries()
@@ -174,6 +176,28 @@ namespace SmartPlugAndroid
             }
         }
 
+        void SimpleTimerButtonPressed(object sender, EventArgs eventArgs)
+        {
+            ShowInputDialog("Countdown timer", "Turning off device after set minutes:", communicator.ActiveDevice.Item1, Android.Text.InputTypes.NumberFlagDecimal, (name) =>
+            {
+                int i = 0;
+                if (int.TryParse(name, out i) && i > 0)
+                {
+                    ShowToast($"Turning off device in {i} minutes");
+                }
+                else
+                {
+                    ShowToast("Invalid time");
+                }
+            });
+        }
+
+        void SendCountdownTime(int minutes)
+        {
+            communicator.SendCommandData("turnoffcountdown", new List<(string, string)>() { ("time", (minutes * 60).ToString()) });
+        }
+
+
         void SetToggleButtonState(Mode mode)
         {
             FindViewById<ToggleButton>(Resource.Id.toggleButtonOff).Checked = false;
@@ -184,12 +208,18 @@ namespace SmartPlugAndroid
             {
                 case Mode.Off:
                     FindViewById<ToggleButton>(Resource.Id.toggleButtonOff).Checked = true;
+                    FindViewById<LinearLayout>(Resource.Id.linearLayoutSimpleTimer).Visibility = ViewStates.Gone;
+                    FindViewById<ScrollView>(Resource.Id.scrollViewTimeTable).Visibility = ViewStates.Gone;
                     break;
                 case Mode.On:
                     FindViewById<ToggleButton>(Resource.Id.toggleButtonOn).Checked = true;
+                    FindViewById<LinearLayout>(Resource.Id.linearLayoutSimpleTimer).Visibility = ViewStates.Visible;
+                    FindViewById<ScrollView>(Resource.Id.scrollViewTimeTable).Visibility = ViewStates.Gone;
                     break;
                 case Mode.Timer:
                     FindViewById<ToggleButton>(Resource.Id.toggleButtonTime).Checked = true;
+                    FindViewById<LinearLayout>(Resource.Id.linearLayoutSimpleTimer).Visibility = ViewStates.Gone;
+                    FindViewById<ScrollView>(Resource.Id.scrollViewTimeTable).Visibility = ViewStates.Visible;
                     break;
             }
         }
@@ -211,14 +241,14 @@ namespace SmartPlugAndroid
             }
         }
 
-        public void ShowInputDialog(string title, string message, string defaultInput, Action<string> acceptAction)
+        public void ShowInputDialog(string title, string message, string defaultInput, Android.Text.InputTypes inputTypes, Action<string> acceptAction)
         {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.SetTitle(title);
             builder.SetMessage(message);
 
             var inputText = new EditText(this);
-            inputText.SetRawInputType(Android.Text.InputTypes.TextFlagNoSuggestions | Android.Text.InputTypes.TextVariationVisiblePassword);
+            inputText.SetRawInputType(inputTypes);
             inputText.Text = defaultInput;
             builder.SetView(inputText);
 
@@ -265,10 +295,10 @@ namespace SmartPlugAndroid
                 var ssid = GetCurrentSSID();
                 var bssid = wifiManager.ConnectionInfo.BSSID;
 
-                ShowInputDialog("Send Wifi Config", $"SSID: {ssid}\nEnter password:", DEFAULTPASSWORD, (password) =>
-                 {
-                     communicator.SendSmartConfig(ssid, bssid, password);
-                 });
+                ShowInputDialog("Send Wifi Config", $"SSID: {ssid}\nEnter password:", DEFAULTPASSWORD, Android.Text.InputTypes.TextVariationVisiblePassword, (password) =>
+                  {
+                      communicator.SendSmartConfig(ssid, bssid, password);
+                  });
             }
             if (id == Resource.Id.action_discover)
             {
