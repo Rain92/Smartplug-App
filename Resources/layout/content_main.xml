@@ -82,13 +82,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:id="@+id/linearLayoutSimpleTimer">
+        android:id="@+id/linearLayoutSimpleTimer"
+        android:visibility="gone">
         <Space
             android:layout_width="wrap_content"
             android:layout_height="20dip"
             android:id="@+id/space1" />
         <TextView
-            android:text="Simple Timer"
+            android:text="Turn off after countdown"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAlignment="center"
@@ -104,7 +105,8 @@
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/scrollViewTimeTable">
+        android:id="@+id/scrollViewTimeTable"
+        android:visibility="gone">
         <TableLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -146,5 +148,29 @@
                 android:background="#FF909090"/>
         </TableLayout>
     </ScrollView>
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayoutPowerMonitor">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textFontWeight="30"
+            android:text="Current Power Draw: "
+            android:id="@+id/textViewCurrentPower"/>
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/lineChart"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"/>
+
+        <!--        <microcharts.droid.ChartView
+            android:id="@+id/chartView"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />-->
+    </LinearLayout>
 
 </LinearLayout>

@@ -85,7 +85,7 @@ namespace SmartPlugAndroid
                 return new byte[0];
             }
         }
-        public byte[] SendCommandData(string command, IEnumerable<(string, string)> data)
+        public byte[] SendCommandData(string command, IEnumerable<KeyValuePair<string, string>> data)
         {
             try
             {
@@ -93,12 +93,7 @@ namespace SmartPlugAndroid
 
                 Debug.WriteLine("Sending data..");
 
-                MultipartFormDataContent content = new MultipartFormDataContent();
-                foreach (var (name, value) in data)
-                {
-                    System.Net.Http.StringContent sContent = new StringContent(value);
-                    content.Add(sContent, name);
-                }
+                var content = new FormUrlEncodedContent(data);
 
                 var response = httpClient.PostAsync(uri, content).Result;
 
@@ -117,7 +112,7 @@ namespace SmartPlugAndroid
         {
             return Encoding.UTF8.GetString(SendCommandData(command, data));
         }
-        public string SendCommandDataParsed(string command, IEnumerable<(string, string)> data)
+        public string SendCommandDataParsed(string command, IEnumerable<KeyValuePair<string, string>> data)
         {
             return Encoding.UTF8.GetString(SendCommandData(command, data));
         }
