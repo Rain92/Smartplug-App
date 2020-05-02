@@ -49,7 +49,7 @@
         android:minHeight="25px"
         android:layout_width="match_parent"
         android:layout_height="84.5dp"
-        android:id="@+id/linearLayout2">
+        android:id="@+id/linearLayoutButtons">
         <ToggleButton
             android:layout_width="0dp"
             android:layout_weight=".25"
@@ -77,9 +77,36 @@
             android:textOff="@string/toggleButtonTime" />
     </LinearLayout>
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:id="@+id/linearLayoutSimpleTimer"
+        android:visibility="gone">
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="20dip"
+            android:id="@+id/space1" />
+        <TextView
+            android:text="Turn off after countdown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:id="@+id/textViewSimpleTimerInfo" />
+        <Button
+            android:text="Start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:id="@+id/buttonSipleTimer" />
+    </LinearLayout>
+
     <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollViewTimeTable"
+        android:visibility="gone">
         <TableLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -119,65 +146,31 @@
                 android:layout_width="wrap_content"
                 android:layout_height="2dip"
                 android:background="#FF909090"/>
-
-            <!--                <TableRow
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dip">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="3dip"
-                        android:text="Monday"/>
-                    <ImageButton
-                        android:layout_column="3"
-                        android:layout_width="40dip"
-                        android:layout_height="40dip"
-                        android:gravity="right"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignParentRight="true"
-                        android:scaleType="fitCenter"
-                        android:background="@null"
-                        android:contentDescription=""
-                        android:src="@android:drawable/ic_input_add" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dip"
-                    android:layout_marginRight="5dip">
-                    <TextView
-                        android:layout_column="1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="3dip"
-                        android:text="12:00"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="3dip"
-                        android:text="12:30"/>
-                    <ImageButton
-                        android:layout_column="3"
-                        android:layout_width="40dip"
-                        android:layout_height="40dip"
-                        android:gravity="right"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignParentRight="true"
-                        android:scaleType="fitCenter"
-                        android:background="@null"
-                        android:contentDescription=""
-                        android:src="@android:drawable/ic_delete" />
-                </TableRow>
-
-                <View
-                    android:id="@+id/seperatorLineTemplate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="2dip"
-                    android:layout_margin="5dip"
-                    android:background="#FF909090"/>-->
-
         </TableLayout>
     </ScrollView>
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayoutPowerMonitor">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textFontWeight="30"
+            android:text="Current Power Draw: "
+            android:id="@+id/textViewCurrentPower"/>
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/lineChart"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"/>
+
+        <!--        <microcharts.droid.ChartView
+            android:id="@+id/chartView"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />-->
+    </LinearLayout>
+
 </LinearLayout>

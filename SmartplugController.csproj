@@ -35,9 +35,9 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
     <AndroidLinkMode>None</AndroidLinkMode>
-    <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
+    <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <AndroidSupportedAbis />
     <AndroidHttpClientHandlerType>System.Net.Http.HttpClientHandler</AndroidHttpClientHandlerType>
@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
+    <Compile Include="PowerUsageHistory.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Esp32Commuicator.cs" />
@@ -115,13 +116,19 @@
     <PackageReference Include="EspTouchSmartConfigXamarin">
       <Version>1.0.4</Version>
     </PackageReference>
+    <PackageReference Include="Microcharts">
+      <Version>0.7.1</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.Net.Http">
       <Version>2.2.29</Version>
+    </PackageReference>
+    <PackageReference Include="MPAndroidChart">
+      <Version>3.0.3</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Android.Support.Design" Version="28.0.0.3" />
     <PackageReference Include="Xamarin.Android.Support.Core.Utils" Version="28.0.0.3" />
     <PackageReference Include="Xamarin.Android.Support.CustomTabs" Version="28.0.0.3" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.3.1" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.5.3.1" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\table_header_row.xml">

@@ -73,7 +73,7 @@ namespace SmartPlugAndroid
                 ByteArrayContent baContent = new ByteArrayContent(data);
                 content.Add(baContent, "file", "file");
 
-                var response = httpClient.PutAsync(uri, content).Result;
+                var response = httpClient.PostAsync(uri, content).Result;
 
                 var bytes = response.Content.ReadAsByteArrayAsync().Result;
 
@@ -85,10 +85,38 @@ namespace SmartPlugAndroid
                 return new byte[0];
             }
         }
+        public byte[] SendCommandData(string command, IEnumerable<KeyValuePair<string, string>> data)
+        {
+            try
+            {
+                Uri uri = new Uri($"http://{ActiveDevice.Item2}/{command}");
+
+                Debug.WriteLine("Sending data..");
+
+                var content = new FormUrlEncodedContent(data);
+
+                var response = httpClient.PostAsync(uri, content).Result;
+
+                var bytes = response.Content.ReadAsByteArrayAsync().Result;
+
+                return bytes;
+            }
+            catch (Exception e)
+            {
+                FeedbackCallback($"Communication Error: {e.Message}");
+                return new byte[0];
+            }
+        }
+
         public string SendCommandDataParsed(string command, byte[] data)
         {
             return Encoding.UTF8.GetString(SendCommandData(command, data));
         }
+        public string SendCommandDataParsed(string command, IEnumerable<KeyValuePair<string, string>> data)
+        {
+            return Encoding.UTF8.GetString(SendCommandData(command, data));
+        }
+
         public byte[] SendCommand(string command)
         {
             try
